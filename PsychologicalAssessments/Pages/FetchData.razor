@@ -1,0 +1,65 @@
+﻿@page "/fetchdata"
+@using PsychologicalAssessments.Services.ConnersSelfEvaluation
+@using System.Text.Json
+@using PsychologicalAssessments.Services.Clipboard
+
+@inject IConnersSelfEvaluationService ConnerService
+@inject IClipboardService ClipboardService
+
+<PageTitle>Upload</PageTitle>
+
+
+<p>
+    <label>
+        <InputFile OnChange="@LoadFile"/>
+    </label>
+</p>
+
+<div @onclick="CopyToClipboard">
+    <span class="oi oi-clipboard oi-lg">Copy to clipboard</span>
+</div>
+
+@if (_snapshot?.Exception != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @(_snapshot.Exception.Message)
+        @(_snapshot.Exception.StackTrace)
+    </div>
+}
+
+<pre>
+    @if (_showResults)
+    {
+        @JsonSerializer.Serialize(_snapshot?.States?.LastOrDefault(), new JsonSerializerOptions() { WriteIndented = true })
+    }
+</pre>
+
+@code {
+    private Snapshot? _snapshot;
+    private bool _showResults;
+
+    private async Task LoadFile(InputFileChangeEventArgs e)
+    {
+        var files = e.GetMultipleFiles();
+        var file = files.FirstOrDefault();
+
+        if (file is null)
+        {
+            return;
+        }
+
+        _snapshot = await ConnerService.InitAsync(file);
+        _showResults = true;
+    }
+
+    private void CopyToClipboard()
+    {
+        var json = JsonSerializer.Serialize(_snapshot?.States?.LastOrDefault(), new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        });
+
+        ClipboardService.CopyToClipboard(json);
+    }
+
+}
