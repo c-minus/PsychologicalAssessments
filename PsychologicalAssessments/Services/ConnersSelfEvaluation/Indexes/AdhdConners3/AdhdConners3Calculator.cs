@@ -40,69 +40,50 @@ public class AdhdConners3Calculator : IAdhdConners3Calculator
         yield return new AdhdConners3Rule
         {
             Ids = new List<byte> { 6, 9, 15, 21, 43, 63 },
-            Func = GetRule1Transformation
+            Func = TransformTypeOne
         };
 
         yield return new AdhdConners3Rule
         {
             Ids = new List<byte> { 34, 50 },
-            Func = GetRule1Transformation
+            Func = TransformTypeTwo
         };
 
         yield return new AdhdConners3Rule
         {
             Ids = new List<byte> { 35, 61 },
-            Func = GetRule1Transformation
+            Func = TransformTypeThree
         };
     }
 
-    private byte GetRule1Transformation(byte initialScore)
+    private byte TransformTypeOne(byte initialScore)
     {
-        if (initialScore == 0 || initialScore == 1)
+        return initialScore switch
         {
-            return 0;
-        }
-        else if (initialScore == 2)
-        {
-            return 1;
-        }
-        else if (initialScore == 3)
-        {
-            return 2;
-        }
-        else
-        {
-            throw new Exception($"Invalid score: {initialScore}, expected between one and three.");
-        }
+            0 or 1 => 0,
+            2 => 1,
+            3 => 2,
+            _ => throw new Exception($"Invalid score: {initialScore}, expected between one and three.")
+        };
     }
-    private byte GetRule2Transformation(byte initialScore)
+
+    private byte TransformTypeTwo(byte initialScore)
     {
-        if (initialScore == 0 || initialScore == 1)
+        return initialScore switch
         {
-            return 0;
-        }
-        else if (initialScore == 2 || initialScore == 3)
-        {
-            return 1;
-        }
-        else
-        {
-            throw new Exception($"Invalid score: {initialScore}, expected between one and three.");
-        }
+            0 or 1 => 0,
+            2 or 3 => 1,
+            _ => throw new Exception($"Invalid score: {initialScore}, expected between one and three.")
+        };
     }
-    private byte GetRule3Transformation(byte initialScore)
+
+    private byte TransformTypeThree(byte initialScore)
     {
-        if (initialScore == 0 || initialScore == 1)
+        return initialScore switch
         {
-            return 0;
-        }
-        else if (initialScore == 2 || initialScore == 3)
-        {
-            return 2;
-        }
-        else
-        {
-            throw new Exception($"Invalid score: {initialScore}, expected between one and three.");
-        }
+            0 or 1 => 0,
+            2 or 3 => 2,
+            _ => throw new Exception($"Invalid score: {initialScore}, expected between one and three.")
+        };
     }
 }

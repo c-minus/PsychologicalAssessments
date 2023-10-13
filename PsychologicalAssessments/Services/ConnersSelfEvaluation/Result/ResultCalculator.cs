@@ -74,21 +74,24 @@ public class ResultCalculator : IResultCalculator
     {
         foreach (var profileCategory in subject?.Profile?.Categories!)
         {
-            var totalValue = subject?.Questions!
-                .Where(q => q.Categories!.Contains(profileCategory.Id))
-                .Sum(q => q.Score);
+            var questions = subject?.Questions!
+                .Where(q => q.Categories!.Contains(profileCategory.Id));
+            var totalValue = questions?.Sum(q => q.Score);
+
+            profileCategory.Questions = questions?.ToList();
+            profileCategory.Total = (byte)totalValue!;
 
             var mappings = profileCategory?.AgeSegment?.Mappings;
             var max = mappings!.MaxBy(kvp => kvp.Key).Key;
             totalValue = totalValue > max ? max : totalValue;
-            
+
             var scoreT = mappings!.FirstOrDefault(a => a.Key == totalValue).Value;
 
             yield return new ResultCategory<byte>()
             {
                 Id = profileCategory!.Id,
                 Name = profileCategory.Name,
-                Value = (byte)scoreT!
+                Value = scoreT
             };
         }
 

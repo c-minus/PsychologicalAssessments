@@ -62,7 +62,7 @@ public class CategoryTypeFactory : ICategoryTypeFactory
                 Id = 6,
                 Categories = new List<string>
                 {
-                    "HY", "AN"
+                    "HY", "AH"
                 }
             },
             new CategoryMap
@@ -70,7 +70,7 @@ public class CategoryTypeFactory : ICategoryTypeFactory
                 Id = 7,
                 Categories = new List<string>
                 {
-                    "HY", "AN"
+                    "HY", "AH"
                 }
             },
             new CategoryMap
@@ -206,7 +206,7 @@ public class CategoryTypeFactory : ICategoryTypeFactory
                 Id = 24,
                 Categories = new List<string>
                 {
-                    "OD1"
+                    "OD"
                 }
             },
             new CategoryMap
@@ -458,7 +458,7 @@ public class CategoryTypeFactory : ICategoryTypeFactory
                 Id = 57,
                 Categories = new List<string>
                 {
-                    "HY2"
+                    "HY"
                 }
             },
             new CategoryMap
@@ -482,7 +482,7 @@ public class CategoryTypeFactory : ICategoryTypeFactory
                 Id = 60,
                 Categories = new List<string>
                 {
-                    "HY2", "AH"
+                    "HY", "AH"
                 }
             },
             new CategoryMap

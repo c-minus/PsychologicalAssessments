@@ -14,7 +14,7 @@ namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Incons
 
             var a = pairs.Sum(p => p.FinalValue);
             var b = pairs
-            .Where(p => p.FinalValue == 2 && p.FinalValue == 3)
+            .Where(p => p.FinalValue is 2 or 3)
             .Sum(p => p.FinalValue);
 
             var index = new InconsistencyIndex
