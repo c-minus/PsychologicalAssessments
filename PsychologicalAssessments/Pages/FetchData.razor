@@ -1,13 +1,14 @@
-﻿@page "/fetchdata"
+﻿@page "/conners-self-evaluation"
 @using PsychologicalAssessments.Services.ConnersSelfEvaluation
 @using System.Text.Json
+@using BlazorDownloadFile
 @using PsychologicalAssessments.Services.Clipboard
 
 @inject IConnersSelfEvaluationService ConnerService
 @inject IClipboardService ClipboardService
+@inject IBlazorDownloadFileService BlazorDownloadFileService
 
-<PageTitle>Upload</PageTitle>
-
+<PageTitle>Conners self evaluation</PageTitle>
 
 <p>
     <label>
@@ -42,15 +43,23 @@
     {
         var files = e.GetMultipleFiles();
         var file = files.FirstOrDefault();
-
+    
         if (file is null)
         {
             return;
         }
-
+    
         _snapshot = await ConnerService.InitAsync(file);
         _showResults = true;
     }
+    
+    // private async Task DownloadFile()
+    // {
+    //     MemoryStream ms = new();
+    //     await file.OpenReadStream().CopyToAsync(ms);
+    //     
+    //     await BlazorDownloadFileService.DownloadFile("Test.xlsx", ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    // } 
 
     private void CopyToClipboard()
     {

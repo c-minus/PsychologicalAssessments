@@ -78,7 +78,7 @@ public class ResultCalculator : IResultCalculator
                 .Where(q => q.Categories!.Contains(profileCategory.Id));
             var totalValue = questions?.Sum(q => q.Score);
 
-            profileCategory.Questions = questions?.ToList();
+            profileCategory.Questions = questions!.ToList();
             profileCategory.Total = (byte)totalValue!;
 
             var mappings = profileCategory?.AgeSegment?.Mappings;

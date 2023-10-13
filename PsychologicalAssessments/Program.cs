@@ -1,5 +1,8 @@
+using BlazorDownloadFile;
+using ElectronNET.API;
 using PsychologicalAssessments.Services.Clipboard;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation;
+using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataSeed;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Adhd;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
@@ -10,10 +13,13 @@ using PsychologicalAssessments.Services.ConnersSelfEvaluation.Profiles;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Result;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddElectron();
+builder.WebHost.UseElectron(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazorDownloadFile();
 builder.Services.AddSingleton<IDataSeed, FileDataSeed>();
 builder.Services.AddSingleton<IConnersSelfEvaluationService, ConnersSelfEvaluationService>();
 builder.Services.AddSingleton<ICategoryTypeFactory, CategoryTypeFactory>();
@@ -28,6 +34,15 @@ builder.Services.AddSingleton<IOppositionDisorderIndex, OppositionDisorderIndex>
 builder.Services.AddSingleton<IAdhdConners3Calculator, AdhdConners3Calculator>();
 builder.Services.AddSingleton<IProfileFactory, ProfileFactory>();
 builder.Services.AddSingleton<IResultCalculator, ResultCalculator>();
+builder.Services.AddSingleton<IDataOutput, DataOutputExcel>();
+
+if (HybridSupport.IsElectronActive)
+{
+    // Open the Electron-Window here
+    await Task.Run(async () => {
+        var window = await Electron.WindowManager.CreateWindowAsync();
+    });
+}
 
 var app = builder.Build();
 
