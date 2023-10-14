@@ -40,7 +40,7 @@ builder.Services.AddSingleton<IDataTemplate, DataTemplateExcel>();
 if (HybridSupport.IsElectronActive)
 {
     // Open the Electron-Window here
-    await Task.Run(async () => {
+    Task.Run(async () => {
         var window = await Electron.WindowManager.CreateWindowAsync();
     });
 }
