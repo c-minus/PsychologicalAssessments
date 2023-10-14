@@ -3,16 +3,18 @@
 @using System.Text.Json
 @using BlazorDownloadFile
 @using PsychologicalAssessments.Services.Clipboard
+@using PsychologicalAssessments.Services.Ocr
 
 @inject IConnersSelfEvaluationService ConnerService
 @inject IClipboardService ClipboardService
 @inject IBlazorDownloadFileService BlazorDownloadFileService
+@inject IOcrService OcrService
 
 <PageTitle>Conners self evaluation</PageTitle>
 
 <p>
     <label>
-        <InputFile OnChange="@LoadFile"/>
+        <InputFile OnChange="@OcrFile"/>
     </label>
 </p>
 
@@ -54,6 +56,17 @@
 
         _snapshot = await ConnerService.InitAsync(file);
         _showResults = true;
+    }
+
+    private async Task OcrFile(InputFileChangeEventArgs e)
+    {
+        var files = e.GetMultipleFiles();
+        var file = files.FirstOrDefault();
+        
+        MemoryStream ms = new();
+        await file?.OpenReadStream().CopyToAsync(ms)!;
+        
+        OcrService.Process(ms);
     }
 
     private async Task DownloadFile()

@@ -11,6 +11,7 @@ using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Inconsiste
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.PiAndNi;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Profiles;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Result;
+using PsychologicalAssessments.Services.Ocr;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddElectron();
@@ -36,6 +37,7 @@ builder.Services.AddSingleton<IProfileFactory, ProfileFactory>();
 builder.Services.AddSingleton<IResultCalculator, ResultCalculator>();
 builder.Services.AddSingleton<IDataOutput, DataOutputExcel>();
 builder.Services.AddSingleton<IDataTemplate, DataTemplateExcel>();
+builder.Services.AddSingleton<IOcrService, OcrService>();
 
 if (HybridSupport.IsElectronActive)
 {
