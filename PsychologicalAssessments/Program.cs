@@ -35,6 +35,7 @@ builder.Services.AddSingleton<IAdhdConners3Calculator, AdhdConners3Calculator>()
 builder.Services.AddSingleton<IProfileFactory, ProfileFactory>();
 builder.Services.AddSingleton<IResultCalculator, ResultCalculator>();
 builder.Services.AddSingleton<IDataOutput, DataOutputExcel>();
+builder.Services.AddSingleton<IDataTemplate, DataTemplateExcel>();
 
 if (HybridSupport.IsElectronActive)
 {

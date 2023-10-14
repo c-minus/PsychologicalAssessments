@@ -2,9 +2,9 @@ namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Result;
 
 public class ResultCalculator : IResultCalculator
 {
-    public PsychologicalAssessments.Services.ConnersSelfEvaluation.Result.Result? Calculate(Subject subject)
+    public Result? Calculate(Subject subject)
     {
-        return new PsychologicalAssessments.Services.ConnersSelfEvaluation.Result.Result()
+        return new Result()
         {
             ResultT = GetResultT(subject).ToList(),
             ResultBool = GetResultBool(subject).ToList(),

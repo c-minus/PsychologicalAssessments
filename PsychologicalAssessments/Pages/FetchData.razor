@@ -16,8 +16,10 @@
     </label>
 </p>
 
+<button Color="ButtonColor.Primary" @onclick="@DownloadFile">Download</button>
+
 <div @onclick="CopyToClipboard">
-    <span class="oi oi-clipboard oi-lg">Copy to clipboard</span>
+    <span class="oi oi-clipboard oi-lg">Copy detailed response</span>
 </div>
 
 @if (_snapshot?.Exception != null)
@@ -36,30 +38,32 @@
 </pre>
 
 @code {
-    private Snapshot? _snapshot;
     private bool _showResults;
+    private Snapshot? _snapshot;
+        const string ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
     private async Task LoadFile(InputFileChangeEventArgs e)
     {
         var files = e.GetMultipleFiles();
         var file = files.FirstOrDefault();
-    
+
         if (file is null)
         {
             return;
         }
-    
+
         _snapshot = await ConnerService.InitAsync(file);
         _showResults = true;
     }
-    
-    // private async Task DownloadFile()
-    // {
-    //     MemoryStream ms = new();
-    //     await file.OpenReadStream().CopyToAsync(ms);
-    //     
-    //     await BlazorDownloadFileService.DownloadFile("Test.xlsx", ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    // } 
+
+    private async Task DownloadFile()
+    {
+        var name = _snapshot?.States?.LastOrDefault()?.Name;
+        var fileName = $"Output-{name}.xlsx";
+        var output = _snapshot!.Output;
+
+        await BlazorDownloadFileService.DownloadFile(fileName, output, ContentType);
+    }
 
     private void CopyToClipboard()
     {

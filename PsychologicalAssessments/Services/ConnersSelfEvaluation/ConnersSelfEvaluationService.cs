@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Components.Forms;
+using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataSeed;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Adhd;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
@@ -28,6 +29,8 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
     private readonly IAdhdConners3Calculator _adhdConners3Calculator;
     private readonly IProfileFactory _profileFactory;
     private readonly IResultCalculator? _resultCalculator;
+    private readonly IDataOutput _dataOutput;
+    private readonly IDataTemplate _dataTemplate;
 
     private readonly Snapshot? _snapshot = new();
 
@@ -44,7 +47,9 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
         IOppositionDisorderIndex oppositionDisorderIndex,
         IAdhdConners3Calculator adhdConners3Calculator,
         IProfileFactory profileFactory,
-        IResultCalculator? resultCalculator = null
+        IResultCalculator? resultCalculator,
+        IDataOutput dataOutput,
+        IDataTemplate dataTemplate
     )
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
@@ -64,6 +69,8 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
             adhdConners3Calculator ?? throw new ArgumentNullException(nameof(adhdConners3Calculator));
         _profileFactory = profileFactory ?? throw new ArgumentNullException(nameof(profileFactory));
         _resultCalculator = resultCalculator;
+        _dataOutput = dataOutput ?? throw new ArgumentNullException(nameof(dataOutput));
+        _dataTemplate = dataTemplate ?? throw new ArgumentNullException(nameof(dataTemplate));
     }
 
     public async Task<Snapshot?> InitAsync(IBrowserFile file)
@@ -111,6 +118,11 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
 
             subject.Result = _resultCalculator?.Calculate(subject);
             CloneAndAddToSnapshot(subject, State.Result);
+            
+            var template = _dataTemplate.GetTemplate(subject);
+            var output = await _dataOutput.GetByteArray(template);
+
+            _snapshot!.Output = output;
 
             return _snapshot;
         }
