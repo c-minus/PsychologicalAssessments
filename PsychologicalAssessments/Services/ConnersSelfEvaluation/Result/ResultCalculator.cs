@@ -1,3 +1,6 @@
+using PsychologicalAssessments.Orchestrator;
+using PsychologicalAssessments.Orchestrator.Base;
+
 namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Result;
 
 public class ResultCalculator : IResultCalculator
@@ -14,30 +17,30 @@ public class ResultCalculator : IResultCalculator
 
     private IEnumerable<ResultCategory<bool?>> GetResultBool(Subject subject)
     {
-        yield return new ResultCategory<bool?>()
-        {
-            Id = "1",
-            Name = "Inconsistency Index",
-            Value = !(subject?.InconsistencyIndex?.IsProbablyInvalid)
-        };
-        yield return new ResultCategory<bool?>()
-        {
-            Id = "2",
-            Name = "Adhd Inattentive",
-            Value = subject?.AdhdIndex?.IsProbablyInattentive
-        };
-        yield return new ResultCategory<bool?>()
-        {
-            Id = "3",
-            Name = "Adhd HyperActive",
-            Value = subject?.AdhdIndex?.IsProbablyHyperActive
-        };
-        yield return new ResultCategory<bool?>()
-        {
-            Id = "4",
-            Name = "Adhd Combined",
-            Value = subject?.AdhdIndex?.IsProbablyBoth
-        };
+        // yield return new ResultCategory<bool?>()
+        // {
+        //     Id = "1",
+        //     Name = "Inconsistency Index",
+        //     Value = !(subject?.InconsistencyIndex?.IsProbablyInvalid)
+        // };
+        // yield return new ResultCategory<bool?>()
+        // {
+        //     Id = "2",
+        //     Name = "Adhd Inattentive",
+        //     Value = subject?.AdhdIndex?.IsProbablyInattentive
+        // };
+        // yield return new ResultCategory<bool?>()
+        // {
+        //     Id = "3",
+        //     Name = "Adhd HyperActive",
+        //     Value = subject?.AdhdIndex?.IsProbablyHyperActive
+        // };
+        // yield return new ResultCategory<bool?>()
+        // {
+        //     Id = "4",
+        //     Name = "Adhd Combined",
+        //     Value = subject?.AdhdIndex?.IsProbablyBoth
+        // };
         yield return new ResultCategory<bool?>()
         {
             Id = "5",

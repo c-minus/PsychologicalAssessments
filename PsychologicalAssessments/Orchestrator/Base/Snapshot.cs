@@ -1,4 +1,4 @@
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation;
+namespace PsychologicalAssessments.Orchestrator.Base;
 public class Snapshot
 {
     public List<Subject>? States { get; set; }

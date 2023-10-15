@@ -1,7 +1,11 @@
 using BlazorDownloadFile;
 using ElectronNET.API;
+using PsychologicalAssessments.Orchestrator;
+using PsychologicalAssessments.Orchestrator.CategoryMap;
+using PsychologicalAssessments.Orchestrator.ScoringType;
 using PsychologicalAssessments.Services.Clipboard;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation;
+using PsychologicalAssessments.Services.ConnersSelfEvaluation.CategoryMap;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataSeed;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Adhd;
@@ -11,6 +15,7 @@ using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Inconsiste
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.PiAndNi;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Profiles;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Result;
+using PsychologicalAssessments.Services.ConnersSelfEvaluation.ScoringType;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddElectron();
@@ -22,13 +27,9 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazorDownloadFile();
 builder.Services.AddSingleton<IDataSeed, FileDataSeed>();
 builder.Services.AddSingleton<IConnersSelfEvaluationService, ConnersSelfEvaluationService>();
-builder.Services.AddSingleton<ICategoryTypeFactory, CategoryTypeFactory>();
-builder.Services.AddSingleton<IScoringTypeFactory, ScoringTypeFactory>();
-builder.Services.AddSingleton<IInconsistencyIndexCalculator, InconsistencyIndexCalculator>();
-builder.Services.AddSingleton<IPiAndNiIndexCalculator, PiAndNiIndexCalculator>();
+builder.Services.AddSingleton<ICategoryMapFactory, ConnersSelfCategoryMapFactory>();
+builder.Services.AddSingleton<IScoringType, ConnersSelfScoringType>();
 builder.Services.AddScoped<IClipboardService, ClipboardService>();
-builder.Services.AddSingleton<IAdhdHyperActiveIndex, AdhdHyperActiveCalculator>();
-builder.Services.AddSingleton<IAdhdInattentiveIndex, AdhdInattentiveCalculator>();
 builder.Services.AddSingleton<IBehaviorDisorderIndex, BehaviorDisorderIndex>();
 builder.Services.AddSingleton<IOppositionDisorderIndex, OppositionDisorderIndex>();
 builder.Services.AddSingleton<IAdhdConners3Calculator, AdhdConners3Calculator>();

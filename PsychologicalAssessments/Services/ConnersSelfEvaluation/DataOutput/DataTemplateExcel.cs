@@ -1,3 +1,6 @@
+using PsychologicalAssessments.Orchestrator;
+using PsychologicalAssessments.Orchestrator.Base;
+
 namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
 
 public class DataTemplateExcel : IDataTemplate
@@ -6,11 +9,11 @@ public class DataTemplateExcel : IDataTemplate
     {
         return new object[]
         {
-            new
-            {
-                Item = "Indicele de inconsistență",
-                Value = (bool)subject.InconsistencyIndex!.IsProbablyInvalid! ? 0 : 1
-            },
+            // new
+            // {
+            //     Item = "Indicele de inconsistență",
+            //     Value = (bool)subject.InconsistencyIndex!.IsProbablyInvalid! ? 0 : 1
+            // },
             new
             {
                 Item = "Neatenție",
@@ -41,26 +44,26 @@ public class DataTemplateExcel : IDataTemplate
                 Item = "Scor T ADHD Neatent",
                 Value = (int)subject.Result.ResultT.FirstOrDefault(r => r.Id == "AN")!.Value
             },
-            new
-            {
-                Item = "Scor simptom ADHD Neatent",
-                Value = (bool)subject?.AdhdIndex?.IsProbablyInattentive! ? 1 : 0
-            },
-            new
-            {
-                Item = "Scor T ADHD Hiperactiv-Impulsiv",
-                Value = (int)subject.Result.ResultT.FirstOrDefault(r => r.Id == "AH")!.Value
-            },
-            new
-            {
-                Item = "Scor simptom Hiperactiv-Impulsiv",
-                Value = (bool)subject?.AdhdIndex?.IsProbablyHyperActive! ? 1 : 0
-            },
-            new
-            {
-                Item = "Scor simptom ADHD Combinat",
-                Value = (bool)subject?.AdhdIndex?.IsProbablyBoth! ? 1 : 0
-            },
+            // new
+            // {
+            //     Item = "Scor simptom ADHD Neatent",
+            //     Value = (bool)subject?.AdhdIndex?.IsProbablyInattentive! ? 1 : 0
+            // },
+            // new
+            // {
+            //     Item = "Scor T ADHD Hiperactiv-Impulsiv",
+            //     Value = (int)subject.Result.ResultT.FirstOrDefault(r => r.Id == "AH")!.Value
+            // },
+            // new
+            // {
+            //     Item = "Scor simptom Hiperactiv-Impulsiv",
+            //     Value = (bool)subject?.AdhdIndex?.IsProbablyHyperActive! ? 1 : 0
+            // },
+            // new
+            // {
+            //     Item = "Scor simptom ADHD Combinat",
+            //     Value = (bool)subject?.AdhdIndex?.IsProbablyBoth! ? 1 : 0
+            // },
             new
             {
                 Item = "Scor T Tulburare de Comportament",

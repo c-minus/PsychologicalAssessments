@@ -1,4 +1,4 @@
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation;
+namespace PsychologicalAssessments.Orchestrator.CategoryMap;
 
 public class CategoryMap
 {

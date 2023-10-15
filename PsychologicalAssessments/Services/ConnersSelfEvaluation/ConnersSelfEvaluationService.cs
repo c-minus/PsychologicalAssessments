@@ -1,5 +1,9 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Components.Forms;
+using PsychologicalAssessments.Orchestrator.Base;
+using PsychologicalAssessments.Orchestrator.CategoryMap;
+using PsychologicalAssessments.Orchestrator.ScoringType;
+using PsychologicalAssessments.Orchestrator.StateFactory;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataSeed;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Adhd;
@@ -18,12 +22,8 @@ namespace PsychologicalAssessments.Services.ConnersSelfEvaluation;
 public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
 {
     private readonly IDataSeed _data;
-    private readonly IScoringTypeFactory _scoringTypeFactory;
-    private readonly ICategoryTypeFactory _categoryFactory;
-    private readonly IInconsistencyIndexCalculator _inconsistencyIndexCalculator;
-    private readonly IPiAndNiIndexCalculator _piAndNiIndexCalculator;
-    private readonly IAdhdHyperActiveIndex _adhdHyperActiveIndex;
-    private readonly IAdhdInattentiveIndex _adhdInattentiveIndex;
+    private readonly IScoringType _scoringType;
+    private readonly ICategoryMapFactory _categoryFactory;
     private readonly IBehaviorDisorderIndex _behaviorDisorderIndex;
     private readonly IOppositionDisorderIndex _oppositionDisorderIndex;
     private readonly IAdhdConners3Calculator _adhdConners3Calculator;
@@ -31,36 +31,28 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
     private readonly IResultCalculator? _resultCalculator;
     private readonly IDataOutput _dataOutput;
     private readonly IDataTemplate _dataTemplate;
+    private readonly IStateFactory _stateFactory;
 
     private readonly Snapshot? _snapshot = new();
 
     public ConnersSelfEvaluationService
     (
-        IScoringTypeFactory scoringTypeFactory,
+        IScoringType scoringType,
         IDataSeed data,
-        ICategoryTypeFactory categoryFactory,
-        IInconsistencyIndexCalculator inconsistencyIndexCalculator,
-        IPiAndNiIndexCalculator piAndNiIndexCalculator,
-        IAdhdHyperActiveIndex adhdHyperActiveIndex,
-        IAdhdInattentiveIndex adhdInattentiveIndex,
+        ICategoryMapFactory categoryFactory,
         IBehaviorDisorderIndex behaviorDisorderIndex,
         IOppositionDisorderIndex oppositionDisorderIndex,
         IAdhdConners3Calculator adhdConners3Calculator,
         IProfileFactory profileFactory,
         IResultCalculator? resultCalculator,
         IDataOutput dataOutput,
-        IDataTemplate dataTemplate
+        IDataTemplate dataTemplate,
+        IStateFactory stateFactory
     )
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
-        _scoringTypeFactory = scoringTypeFactory ?? throw new ArgumentNullException(nameof(scoringTypeFactory));
+        _scoringType = scoringType ?? throw new ArgumentNullException(nameof(scoringType));
         _categoryFactory = categoryFactory ?? throw new ArgumentNullException(nameof(categoryFactory));
-        _inconsistencyIndexCalculator = inconsistencyIndexCalculator ??
-                                        throw new ArgumentNullException(nameof(inconsistencyIndexCalculator));
-        _piAndNiIndexCalculator =
-            piAndNiIndexCalculator ?? throw new ArgumentNullException(nameof(piAndNiIndexCalculator));
-        _adhdHyperActiveIndex = adhdHyperActiveIndex ?? throw new ArgumentNullException(nameof(adhdHyperActiveIndex));
-        _adhdInattentiveIndex = adhdInattentiveIndex ?? throw new ArgumentNullException(nameof(adhdInattentiveIndex));
         _behaviorDisorderIndex =
             behaviorDisorderIndex ?? throw new ArgumentNullException(nameof(behaviorDisorderIndex));
         _oppositionDisorderIndex =
@@ -71,54 +63,58 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
         _resultCalculator = resultCalculator;
         _dataOutput = dataOutput ?? throw new ArgumentNullException(nameof(dataOutput));
         _dataTemplate = dataTemplate ?? throw new ArgumentNullException(nameof(dataTemplate));
+        _stateFactory = stateFactory ?? throw new ArgumentNullException(nameof(stateFactory));
     }
 
     public async Task<Snapshot?> InitAsync(IBrowserFile file)
     {
         try
         {
-            var subject = await _data.GetAsync(file);
-            CloneAndAddToSnapshot(subject, State.InitialData);
-
-            ApplyScoringType(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.ScoringType);
-
-            ApplyScore(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.Score);
-
-            ApplyCategories(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.Categories);
-
-            subject.InconsistencyIndex = _inconsistencyIndexCalculator.Calculate(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.InconsistencyIndex);
-
-            subject.PiAndNiIndex = _piAndNiIndexCalculator.Calculate(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.PiAndNiIndex);
-
-            subject.AdhdIndex = GetAdhdIndex(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.AdhdIndex);
-
-            subject.DisorderIndex = GetDisorderIndex(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.DisorderIndex);
-
-            subject.DeteriorationIndex = GetDeteriorationIndex(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.DeteriorationIndex);
-
-            subject.AdhdConners3Index = _adhdConners3Calculator.Calculate(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.AdhdConners3Index);
-
-            subject.ScreeningIndex = GetScreeningIndex(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.ScreeningIndex);
-
-            subject.SevereBehaviorIndex = GetSevereBehaviorIndex(subject.Questions!);
-            CloneAndAddToSnapshot(subject, State.SevereBehaviorIndex);
-
-            subject.Profile = _profileFactory.Create(subject.GenderInternal, subject.Age);
-            CloneAndAddToSnapshot(subject, State.Profile);
-
-            subject.Result = _resultCalculator?.Calculate(subject);
-            CloneAndAddToSnapshot(subject, State.Result);
+            // var states = _stateFactory.Create();
+            // var subject = await _data.GetAsync(file);
+            // CloneAndAddToSnapshot(subject, states.FirstOrDefault(s=>s.Key is 1));
+            //
+            // ApplyScoringType(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, states.FirstOrDefault(s=>s.Key is 2));
+            //
+            // ApplyScore(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, states.FirstOrDefault(s=>s.Key is 3));
+            //
+            // ApplyCategories(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.Categories);
+            //
+            // subject.InconsistencyIndex = _inconsistencyIndexCalculator.Calculate(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.InconsistencyIndex);
+            //
+            // subject.PiAndNiIndex = _piAndNiIndexCalculator.Calculate(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.PiAndNiIndex);
+            //
+            // subject.AdhdIndex = GetAdhdIndex(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.AdhdIndex);
+            //
+            // subject.DisorderIndex = GetDisorderIndex(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.DisorderIndex);
+            //
+            // subject.DeteriorationIndex = GetDeteriorationIndex(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.DeteriorationIndex);
+            //
+            // subject.AdhdConners3Index = _adhdConners3Calculator.Calculate(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.AdhdConners3Index);
+            //
+            // subject.ScreeningIndex = GetScreeningIndex(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.ScreeningIndex);
+            //
+            // subject.SevereBehaviorIndex = GetSevereBehaviorIndex(subject.Questions!);
+            // CloneAndAddToSnapshot(subject, State.SevereBehaviorIndex);
+            //
+            // subject.Profile = _profileFactory.Create(subject.GenderInternal, subject.Age);
+            // CloneAndAddToSnapshot(subject, State.Profile);
+            //
+            // subject.Result = _resultCalculator?.Calculate(subject);
+            // CloneAndAddToSnapshot(subject, State.Result);
+            //
             
+            var subject = new Subject();
             var template = _dataTemplate.GetTemplate(subject);
             var output = await _dataOutput.GetByteArray(template);
 
@@ -138,7 +134,7 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
     {
         foreach (var question in questions)
         {
-            question.ScoringType = _scoringTypeFactory.Get(question.Id);
+            question.ScoringType = _scoringType.Get(question.Id);
         }
     }
 
@@ -158,16 +154,16 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
         }
     }
 
-    private AdhdIndex GetAdhdIndex(List<Question> questions)
-    {
-        var adhdIndex = new AdhdIndex
-        {
-            HyperActiveIndex = _adhdHyperActiveIndex.Calculate(questions),
-            InattentiveIndex = _adhdInattentiveIndex.Calculate(questions)
-        };
-
-        return adhdIndex;
-    }
+    // private AdhdIndex GetAdhdIndex(List<Question> questions)
+    // {
+    //     var adhdIndex = new AdhdIndex
+    //     {
+    //         HyperActiveIndex = _adhdHyperActiveIndex.Calculate(questions),
+    //         InattentiveIndex = _adhdInattentiveIndex.Calculate(questions)
+    //     };
+    //
+    //     return adhdIndex;
+    // }
 
     private DisorderIndex GetDisorderIndex(List<Question> questions)
     {
@@ -232,7 +228,7 @@ public class ConnersSelfEvaluationService : IConnersSelfEvaluationService
         };
     }
 
-    private void CloneAndAddToSnapshot(Subject subject, State state)
+    private void CloneAndAddToSnapshot(Subject subject, KeyValuePair<byte,string> state)
     {
         subject.CurrentState = state;
         var serialized = JsonSerializer.Serialize(subject);

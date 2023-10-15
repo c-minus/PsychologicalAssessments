@@ -1,4 +1,7 @@
-﻿namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
+﻿using PsychologicalAssessments.Orchestrator;
+using PsychologicalAssessments.Orchestrator.Base;
+
+namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
 
 public class AdhdConners3Calculator : IAdhdConners3Calculator
 {

@@ -1,4 +1,7 @@
-﻿namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder
+﻿using PsychologicalAssessments.Orchestrator;
+using PsychologicalAssessments.Orchestrator.Base;
+
+namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder
 {
 	public class BehaviorDisorderIndex : IBehaviorDisorderIndex
 	{
