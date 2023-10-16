@@ -1,16 +1,11 @@
 using BlazorDownloadFile;
 using ElectronNET.API;
+using PsychologicalAssessments.Orchestrator.DataOutput;
+using PsychologicalAssessments.Orchestrator.DataSeed;
+using PsychologicalAssessments.Orchestrator.Dependencies;
+using PsychologicalAssessments.Orchestrator.Service;
+using PsychologicalAssessments.Orchestrator.Tresult;
 using PsychologicalAssessments.Services.Clipboard;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataSeed;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Adhd;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Inconsistency;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.PiAndNi;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Profiles;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Result;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddElectron();
@@ -20,22 +15,12 @@ builder.WebHost.UseElectron(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazorDownloadFile();
+builder.Services.AddSingleton<IOrchestratorService, OrchestratorService>();
+builder.Services.AddSingleton<IDependenciesFactory, DependenciesFactory>();
 builder.Services.AddSingleton<IDataSeed, FileDataSeed>();
-builder.Services.AddSingleton<IConnersSelfEvaluationService, ConnersSelfEvaluationService>();
-builder.Services.AddSingleton<ICategoryTypeFactory, CategoryTypeFactory>();
-builder.Services.AddSingleton<IScoringTypeFactory, ScoringTypeFactory>();
-builder.Services.AddSingleton<IInconsistencyIndexCalculator, InconsistencyIndexCalculator>();
-builder.Services.AddSingleton<IPiAndNiIndexCalculator, PiAndNiIndexCalculator>();
 builder.Services.AddScoped<IClipboardService, ClipboardService>();
-builder.Services.AddSingleton<IAdhdHyperActiveIndex, AdhdHyperActiveCalculator>();
-builder.Services.AddSingleton<IAdhdInattentiveIndex, AdhdInattentiveCalculator>();
-builder.Services.AddSingleton<IBehaviorDisorderIndex, BehaviorDisorderIndex>();
-builder.Services.AddSingleton<IOppositionDisorderIndex, OppositionDisorderIndex>();
-builder.Services.AddSingleton<IAdhdConners3Calculator, AdhdConners3Calculator>();
-builder.Services.AddSingleton<IProfileFactory, ProfileFactory>();
-builder.Services.AddSingleton<IResultCalculator, ResultCalculator>();
+builder.Services.AddSingleton<ITresultCalculator, TresultCalculator>();
 builder.Services.AddSingleton<IDataOutput, DataOutputExcel>();
-builder.Services.AddSingleton<IDataTemplate, DataTemplateExcel>();
 
 if (HybridSupport.IsElectronActive)
 {

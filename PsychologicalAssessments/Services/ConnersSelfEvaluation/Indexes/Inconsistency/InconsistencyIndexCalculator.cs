@@ -1,9 +1,13 @@
+using PsychologicalAssessments.Orchestrator;
+using PsychologicalAssessments.Orchestrator.Base;
+
 namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Inconsistency
 {
-    public class InconsistencyIndexCalculator : IInconsistencyIndexCalculator
+    public class InconsistencyIndexCalculator : ICalculator
     {
-        public InconsistencyIndex Calculate(List<Question> questions)
+        public object Calculate(object input)
         {
+            var questions = (List<Question>)input;
             var pairs = GetPairs();
 
             foreach (var pair in pairs)
@@ -14,8 +18,8 @@ namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Incons
 
             var a = pairs.Sum(p => p.FinalValue);
             var b = pairs
-            .Where(p => p.FinalValue is 2 or 3)
-            .Sum(p => p.FinalValue);
+                .Where(p => p.FinalValue is 2 or 3)
+                .Sum(p => p.FinalValue);
 
             var index = new InconsistencyIndex
             {
@@ -28,18 +32,24 @@ namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Incons
 
         private IEnumerable<InconsistencyPair> GetPairs()
         {
-            return new List<InconsistencyPair> {
-                new InconsistencyPair { FirstId = 73, SecondId = 85 },
-                new InconsistencyPair { FirstId = 50, SecondId = 60 },
-                new InconsistencyPair { FirstId = 81, SecondId = 79 },
-                new InconsistencyPair { FirstId = 46, SecondId = 90 },
-                new InconsistencyPair { FirstId = 17, SecondId = 30 },
-                new InconsistencyPair { FirstId = 56, SecondId = 70 },
-                new InconsistencyPair { FirstId = 42, SecondId = 63 },
-                new InconsistencyPair { FirstId = 69, SecondId = 83 },
-                new InconsistencyPair { FirstId = 43, SecondId = 61 },
-                new InconsistencyPair { FirstId = 25, SecondId = 38 },
-                };
+            return new List<InconsistencyPair>
+            {
+                new() { FirstId = 73, SecondId = 85 },
+                new() { FirstId = 50, SecondId = 60 },
+                new() { FirstId = 81, SecondId = 79 },
+                new() { FirstId = 46, SecondId = 90 },
+                new() { FirstId = 17, SecondId = 30 },
+                new() { FirstId = 56, SecondId = 70 },
+                new() { FirstId = 42, SecondId = 63 },
+                new() { FirstId = 69, SecondId = 83 },
+                new() { FirstId = 43, SecondId = 61 },
+                new() { FirstId = 25, SecondId = 38 },
+            };
+        }
+        
+        public InconsistencyIndex Calculate(List<Question> questions)
+        {
+            throw new NotImplementedException();
         }
     }
 }
