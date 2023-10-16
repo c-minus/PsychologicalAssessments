@@ -3,7 +3,7 @@ using PsychologicalAssessments.Orchestrator.Base;
 
 namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
 
-public class AdhdConners3Calculator : IAdhdConners3Calculator
+public class AdhdConners3Calculator : ICalculator
 {
     private readonly IEnumerable<AdhdConners3Rule> _rules;
 
@@ -12,8 +12,9 @@ public class AdhdConners3Calculator : IAdhdConners3Calculator
         _rules = GetRules();
     }
 
-    public AdhdConners3Index Calculate(List<Question> questions)
+    public object Calculate(object input)
     {
+        var questions = (List<Question>)input;
         var items = new List<KeyValuePair<byte, byte>>();
 
         foreach (var rule in _rules)
@@ -31,10 +32,14 @@ public class AdhdConners3Calculator : IAdhdConners3Calculator
                 items.Add(new KeyValuePair<byte, byte>(id, rule.Score));
             }
         }
+        
+        var totalScore = (byte)items.Sum(x => x.Value);
 
         return new AdhdConners3Index
         {
-            Items = items
+            Items = items,
+            TotalScore = totalScore,
+            Probability = GetProbability(totalScore)
         };
     }
 
@@ -89,4 +94,27 @@ public class AdhdConners3Calculator : IAdhdConners3Calculator
             _ => throw new Exception($"Invalid score: {initialScore}, expected between one and three.")
         };
     }
+
+    private byte GetProbability(byte totalScore)
+        =>
+            totalScore switch
+            {
+                0 => 26,
+                1 => 35,
+                2 => 44,
+                3 => 52,
+                4 => 59,
+                5 => 66,
+                6 => 73,
+                7 => 78,
+                8 => 83,
+                9 => 87,
+                10 => 91,
+                11 => 94,
+                12 => 96,
+                13 => 97,
+                14 or 15 => 98,
+                16 or 17 or 18 => 99,
+                _ => 0
+            };
 }

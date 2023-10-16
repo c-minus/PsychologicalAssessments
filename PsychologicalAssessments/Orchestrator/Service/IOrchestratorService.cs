@@ -5,5 +5,5 @@ namespace PsychologicalAssessments.Orchestrator.Service;
 
 public interface IOrchestratorService
 {
-    public Task Orchestrate(ServiceType serviceType, IBrowserFile file);
+    public Task<Snapshot> Orchestrate(ServiceType serviceType, IBrowserFile file);
 }

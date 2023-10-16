@@ -1,4 +1,4 @@
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
+namespace PsychologicalAssessments.Orchestrator.DataOutput;
 
 public interface IDataOutput
 {

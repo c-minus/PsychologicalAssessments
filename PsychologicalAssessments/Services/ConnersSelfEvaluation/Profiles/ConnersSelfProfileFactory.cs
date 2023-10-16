@@ -1,9 +1,9 @@
-using PsychologicalAssessments.Orchestrator;
 using PsychologicalAssessments.Orchestrator.Base;
+using PsychologicalAssessments.Orchestrator.Profile;
 
 namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Profiles;
 
-public class ProfileFactory : IProfileFactory
+public class ConnersSelfProfileFactory : IProfileFactory
 {
     private byte _age;
 

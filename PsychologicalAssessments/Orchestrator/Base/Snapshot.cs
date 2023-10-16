@@ -1,12 +1,7 @@
 namespace PsychologicalAssessments.Orchestrator.Base;
 public class Snapshot
 {
-    public List<Subject>? States { get; set; }
+    public List<Subject>? States { get; set; } = new();
     public Exception? Exception { get; set; }
-    public byte[] Output { get; set; }
-
-    public Snapshot()
-    {
-        States = new List<Subject>();
-    }
+    public byte[]? Output { get; set; }
 }

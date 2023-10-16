@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MiniExcelLibs;
-using PsychologicalAssessments.Orchestrator;
 using PsychologicalAssessments.Orchestrator.Base;
 
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.DataSeed
+namespace PsychologicalAssessments.Orchestrator.DataSeed
 {
     public class FileDataSeed : IDataSeed
     {
@@ -26,11 +25,6 @@ namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.DataSeed
             subject.Questions =
                 (await ms.QueryAsync<Question>(sheetName: sheetNames[1]))
                 .ToList();
-
-            if (subject.Questions.Count is not 97)
-            {
-                throw new Exception($"Expecting 97 questions, found {subject.Questions.Count}");
-            }
 
             return subject;
         }

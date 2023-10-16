@@ -1,4 +1,4 @@
-namespace PsychologicalAssessments.Orchestrator;
+namespace PsychologicalAssessments.Orchestrator.Base;
 
 public interface ICalculator
 {

@@ -1,12 +1,11 @@
 ﻿@page "/conners-self-evaluation"
-@using PsychologicalAssessments.Services.ConnersSelfEvaluation
 @using System.Text.Json
 @using BlazorDownloadFile
-@using PsychologicalAssessments.Orchestrator
 @using PsychologicalAssessments.Orchestrator.Base
+@using PsychologicalAssessments.Orchestrator.Service
 @using PsychologicalAssessments.Services.Clipboard
 
-@inject IConnersSelfEvaluationService ConnerService
+@inject IOrchestratorService OrchestratorService
 @inject IClipboardService ClipboardService
 @inject IBlazorDownloadFileService BlazorDownloadFileService
 
@@ -54,7 +53,7 @@
             return;
         }
 
-        _snapshot = await ConnerService.InitAsync(file);
+        _snapshot = await OrchestratorService.Orchestrate(ServiceType.ConnersSelf, file);
         _showResults = true;
     }
 

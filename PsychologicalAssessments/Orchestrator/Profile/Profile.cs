@@ -1,4 +1,4 @@
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Profiles;
+namespace PsychologicalAssessments.Orchestrator.Profile;
 
 public class Profile
 {
