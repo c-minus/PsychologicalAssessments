@@ -1,9 +1,87 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+@using System.Text.Json
+@using BlazorDownloadFile
+@using PsychologicalAssessments.Orchestrator.Base
+@using PsychologicalAssessments.Orchestrator.Service
+@using PsychologicalAssessments.Services.Clipboard
 
-<h1>Hello, world!</h1>
+@inject IOrchestratorService OrchestratorService
+@inject IClipboardService ClipboardService
+@inject IBlazorDownloadFileService BlazorDownloadFileService
 
-Welcome to your new app.
+<PageTitle>Home</PageTitle>
 
-<SurveyPrompt Title="How is Blazor working for you?"/>
+<InputSelect @bind-Value="@_serviceType" class="dropDownSelectList">
+    @foreach (var countryName in Enum.GetValues(typeof(ServiceType)))
+        {
+         <option value="@countryName">@countryName</option>
+        }
+</InputSelect>
+
+<p>
+    <label>
+        <InputFile OnChange="@LoadFile"/>
+    </label>
+</p>
+
+<button Color="ButtonColor.Primary" @onclick="@DownloadFile">Download</button>
+
+<div @onclick="CopyToClipboard">
+    <span class="oi oi-clipboard oi-lg">Copy detailed response</span>
+</div>
+
+@if (_snapshot?.Exception != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @(_snapshot.Exception.Message)
+        @(_snapshot.Exception.StackTrace)
+    </div>
+}
+
+<pre>
+    @if (_showResults)
+    {
+        @JsonSerializer.Serialize(_snapshot?.States?.LastOrDefault(), new JsonSerializerOptions() { WriteIndented = true })
+    }
+</pre>
+
+@code {
+    private ServiceType _serviceType = ServiceType.ConnersSelf;
+    private bool _showResults;
+    private Snapshot? _snapshot;
+        const string ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    
+    private async Task LoadFile(InputFileChangeEventArgs e)
+    {
+        var files = e.GetMultipleFiles();
+        var file = files.FirstOrDefault();
+
+        if (file is null)
+        {
+            return;
+        }
+
+        _snapshot = await OrchestratorService.Orchestrate(_serviceType, file);
+        _showResults = true;
+    }
+
+    private async Task DownloadFile()
+    {
+        var name = _snapshot?.States?.LastOrDefault()?.Name;
+        var fileName = $"Output-{name}.xlsx";
+        var output = _snapshot!.Output;
+
+        await BlazorDownloadFileService.DownloadFile(fileName, output, ContentType);
+    }
+
+    private void CopyToClipboard()
+    {
+        var json = JsonSerializer.Serialize(_snapshot?.States?.LastOrDefault(), new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        });
+
+        ClipboardService.CopyToClipboard(json);
+    }
+}

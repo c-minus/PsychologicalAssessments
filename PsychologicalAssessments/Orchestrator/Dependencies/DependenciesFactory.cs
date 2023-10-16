@@ -14,7 +14,8 @@ public class DependenciesFactory : IDependenciesFactory
         => serviceType switch
         {
             ServiceType.ConnersSelf => GetConnersSelfDependencies(),
-            _ => throw new NotImplementedException()
+            _ => throw new NotImplementedException(
+                $"ServiceType : { Enum.GetName(typeof(ServiceType), serviceType)} not implemented.")
         };
     
     private Dependencies GetConnersSelfDependencies()

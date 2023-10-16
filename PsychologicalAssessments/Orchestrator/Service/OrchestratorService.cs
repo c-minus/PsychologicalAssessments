@@ -25,7 +25,7 @@ public class OrchestratorService : IOrchestratorService
     private IRuleFactory? _ruleFactory;
     private IProfileFactory? _profileFactory;
     private IDataTemplate? _dataTemplate;
-    private Snapshot? _snapshot = new();
+    private Snapshot? _snapshot;
     private List<KeyValuePair<byte, string>>? _states = new();
     private int _stateCategoryIndex = 0;
     private int _stateProfileIndex = 0;
@@ -50,6 +50,7 @@ public class OrchestratorService : IOrchestratorService
     {
         try
         {
+            _snapshot = new();
             SetDependencies(serviceType);
             SetStates();
 
