@@ -1,9 +1,9 @@
 using PsychologicalAssessments.Orchestrator.Base;
 using PsychologicalAssessments.Orchestrator.DataOutput;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Adhd;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.SevereBehavior;
 

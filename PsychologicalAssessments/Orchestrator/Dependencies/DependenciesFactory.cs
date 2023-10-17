@@ -1,8 +1,8 @@
 using PsychologicalAssessments.Orchestrator.Base;
+using PsychologicalAssessments.Services.Conners.ConnersSelfEvaluation.Rules;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.CategoryMap;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Profiles;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Rules;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.ScoringType;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.StateFactory;
 

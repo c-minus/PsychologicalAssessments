@@ -1,13 +1,14 @@
 using PsychologicalAssessments.Orchestrator.Rules;
+using PsychologicalAssessments.Services.Conners.ConnersSelfEvaluation.Indexes.Inconsistency;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Inconsistency;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.PiAndNi;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Adhd;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Inconsistency;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.PiAndNi;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.SevereBehavior;
 
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Rules;
+namespace PsychologicalAssessments.Services.Conners.ConnersSelfEvaluation.Rules;
 
 public class ConnersSelfRuleFactory : IRuleFactory
 {
@@ -16,12 +17,16 @@ public class ConnersSelfRuleFactory : IRuleFactory
         yield return new()
         {
             Name = "InconsistencyIndex",
-            Calculator = new InconsistencyIndexCalculator()
+            Calculator = new InconsistencyIndexCalculator(
+                new ConnersSelfInconsistencyPairFactory(),
+                (a, b) => a >= 9 && b >= 2)
         };
         yield return new()
         {
             Name = "PiAndNiIndex",
-            Calculator = new PiAndNiIndexCalculator()
+            Calculator = new PiAndNiIndexCalculator(
+                (pi=> pi is 0 or 1 or 2),
+                (ni)=> ni is 0 or 1 or 2)
         };
         yield return new()
         {
