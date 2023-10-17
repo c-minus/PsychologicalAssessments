@@ -12,23 +12,28 @@
 
 <PageTitle>Home</PageTitle>
 
-<InputSelect @bind-Value="@_serviceType" class="dropDownSelectList">
-    @foreach (var countryName in Enum.GetValues(typeof(ServiceType)))
-        {
-         <option value="@countryName">@countryName</option>
-        }
-</InputSelect>
+<div class="container">
+    <form>
+        <div class="mb-3">
+            <label for="selectOption" class="form-label">Choose test type</label>
+            <InputSelect @bind-Value="@_serviceType" class="form-select" id="selectOption">
+                @foreach (var countryName in Enum.GetValues(typeof(ServiceType)))
+                {
+                    <option value="@countryName">@countryName</option>
+                }
+            </InputSelect>
+        </div>
 
-<p>
-    <label>
-        <InputFile OnChange="@LoadFile"/>
-    </label>
-</p>
+        <div class="mb-3">
+            <label for="fileInput" class="form-label">Upload input file</label>
+             <InputFile OnChange="@LoadFile" class="form-control" id="fileInput"/>
+        </div>
 
-<button Color="ButtonColor.Primary" @onclick="@DownloadFile">Download</button>
-
-<div @onclick="CopyToClipboard">
-    <span class="oi oi-clipboard oi-lg">Copy detailed response</span>
+        <button class="btn btn-primary" @onclick="@DownloadFile">Download</button>
+        <button class="btn btn-secondary" @onclick="CopyToClipboard">
+             <i class="fas fa-copy"></i> Copy
+        </button>
+    </form>
 </div>
 
 @if (_snapshot?.Exception != null)
@@ -51,7 +56,7 @@
     private bool _showResults;
     private Snapshot? _snapshot;
         const string ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-    
+
     private async Task LoadFile(InputFileChangeEventArgs e)
     {
         var files = e.GetMultipleFiles();
@@ -84,4 +89,5 @@
 
         ClipboardService.CopyToClipboard(json);
     }
+
 }

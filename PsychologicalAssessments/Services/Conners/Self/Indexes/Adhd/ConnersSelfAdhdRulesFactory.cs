@@ -1,35 +1,21 @@
-﻿using PsychologicalAssessments.Orchestrator;
 using PsychologicalAssessments.Orchestrator.Base;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd;
 
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Adhd;
+namespace PsychologicalAssessments.Services.Conners.Self.Indexes.Adhd;
 
-public class AdhdCalculator : ICalculator
+public class ConnersSelfAdhdRulesFactory : IAdhdRulesFactory
 {
-    public object Calculate(object input)
-    {
-        var questions = (List<Question>)input;
+    public Tuple<IEnumerable<AdhdRule>, IEnumerable<AdhdRule>> Create(IEnumerable<Question> questions)
+        => new(GetHyperActiveRules(questions), GetInattentiveRules(questions));
 
-        var hyperActiveRules = GetHyperActiveRules(questions);
-        var hyperActiveCount = hyperActiveRules.Count(x => x.IsMatch());
-
-        var inattentiveRules = GetHyperActiveRules(questions);
-        var inattentiveCount = inattentiveRules.Count(x => x.IsMatch());
-
-        return new AdhdIndex
-        {
-            HyperActiveIndex = (byte)hyperActiveCount,
-            InattentiveIndex = (byte)inattentiveCount
-        };
-    }
-
-    private IEnumerable<AdhdRule> GetHyperActiveRules(List<Question> questions)
+    private IEnumerable<AdhdRule> GetHyperActiveRules(IEnumerable<Question> questions)
     {
         yield return new AdhdRule()
         {
             Name = "A2a",
             Value1 = questions.FirstOrDefault(x => x.Id == 60)!.Score,
             Value2 = null,
-            Predicate = (value1, value2) => value1 == 2 || value1 == 3
+            Predicate = (value1, value2) => value1 is 2 or 3
         };
 
         yield return new AdhdRule()
@@ -96,8 +82,7 @@ public class AdhdCalculator : ICalculator
             Predicate = (value1, value2) => value1 is 2 or 3
         };
     }
-
-    public IEnumerable<AdhdRule> GetInattentiveRules(List<Question> questions)
+    private IEnumerable<AdhdRule> GetInattentiveRules(IEnumerable<Question> questions)
     {
         yield return new AdhdRule()
         {

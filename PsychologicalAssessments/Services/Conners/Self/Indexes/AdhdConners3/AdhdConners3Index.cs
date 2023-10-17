@@ -1,4 +1,4 @@
-﻿namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.AdhdConners3;
+﻿namespace PsychologicalAssessments.Services.Conners.Self.Indexes.AdhdConners3;
 
 public class AdhdConners3Index
 {

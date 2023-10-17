@@ -1,4 +1,4 @@
-﻿namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder
+﻿namespace PsychologicalAssessments.Services.Conners.Self.Indexes.Disorder
 {
 	public class DisorderIndex
 	{
