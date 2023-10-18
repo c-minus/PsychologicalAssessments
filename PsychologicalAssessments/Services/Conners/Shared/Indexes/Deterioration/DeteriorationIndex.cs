@@ -1,4 +1,4 @@
-﻿namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Deterioration;
+﻿namespace PsychologicalAssessments.Services.Conners.Shared.Indexes.Deterioration;
 
 public class DeteriorationIndex
 {

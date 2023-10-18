@@ -1,9 +1,13 @@
 using PsychologicalAssessments.Orchestrator.Rules;
 using PsychologicalAssessments.Services.Conners.ConnersParent.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.Conners.Parent.Indexes.Adhd;
-using PsychologicalAssessments.Services.Conners.Self.Indexes.AdhdConners3;
+using PsychologicalAssessments.Services.Conners.Parent.Indexes.Adhd3;
+using PsychologicalAssessments.Services.Conners.Parent.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Self.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd3;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Deterioration;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.PiAndNi;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
@@ -27,8 +31,8 @@ public class ConnersParentRuleFactory : IRuleFactory
         {
             Name = "PiAndNiIndex",
             Calculator = new PiAndNiIndexCalculator(
-                (pi=> pi is 0 or 1 or 2 or 3),
-                (ni)=> ni is 0 or 1 or 2)
+                (pi => pi is 0 or 1 or 2 or 3),
+                (ni) => ni is 0 or 1 or 2)
         };
         yield return new()
         {
@@ -38,17 +42,17 @@ public class ConnersParentRuleFactory : IRuleFactory
         yield return new()
         {
             Name = "DisorderIndex",
-            Calculator = new DisorderCalculator()
+            Calculator = new DisorderCalculator(new ConnersParentDisorderRulesFactory())
         };
         yield return new()
         {
             Name = "DeteriorationIndex",
-            Calculator = new DisorderCalculator()
+            Calculator = new DeteriorationCalculator(new byte[] { 106, 107, 108 })
         };
         yield return new()
         {
             Name = "AdhdConners3Index",
-            Calculator = new AdhdConners3Calculator()
+            Calculator = new Adhd3Calculator(new ConnersParentAdhd3RulesFactory())
         };
         yield return new()
         {

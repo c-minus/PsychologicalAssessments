@@ -1,6 +1,6 @@
-﻿namespace PsychologicalAssessments.Services.Conners.Self.Indexes.AdhdConners3;
+﻿namespace PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd3;
 
-public class AdhdConners3Index
+public class Adhd3Index
 {
     public List<KeyValuePair<byte, byte>>? Items { get; set; }
 

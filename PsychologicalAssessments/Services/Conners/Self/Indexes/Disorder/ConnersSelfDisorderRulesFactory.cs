@@ -1,29 +1,15 @@
-﻿using PsychologicalAssessments.Orchestrator.Base;
+using PsychologicalAssessments.Orchestrator.Base;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Disorder;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
 
 namespace PsychologicalAssessments.Services.Conners.Self.Indexes.Disorder;
 
-public class DisorderCalculator : ICalculator
-
+public class ConnersSelfDisorderRulesFactory : IDisorderRulesFactory
 {
-    public object Calculate(object input)
-    {
-        var questions = (List<Question>)input;
-
-        var behaviorRules = GetBehaviorRules(questions);
-        var behaviorCount = behaviorRules.Count(x => x.IsMatch());
-
-        var oppositionRules = GetOppositionRules(questions);
-        var oppositionCount = oppositionRules.Count(x => x.IsMatch());
-
-        return new DisorderIndex
-        {
-            BehaviorIndex = (byte)behaviorCount,
-            OppositionIndex = (byte)oppositionCount
-        };
-    }
-
-    private IEnumerable<DisorderRule> GetBehaviorRules(List<Question> questions)
+    public Tuple<IEnumerable<DisorderRule>, IEnumerable<DisorderRule>> Create(IEnumerable<Question> questions)
+        => new(GetBehaviorRules(questions), GetOppositionRules(questions));
+    
+     private IEnumerable<DisorderRule> GetBehaviorRules(IEnumerable<Question> questions)
     {
         yield return new DisorderRule()
         {
@@ -110,8 +96,7 @@ public class DisorderCalculator : ICalculator
             Predicate = (value) => value is 1 or 2 or 3
         };
     }
-
-    private IEnumerable<DisorderRule> GetOppositionRules(List<Question> questions)
+    private IEnumerable<DisorderRule> GetOppositionRules(IEnumerable<Question> questions)
     {
         yield return new DisorderRule()
         {

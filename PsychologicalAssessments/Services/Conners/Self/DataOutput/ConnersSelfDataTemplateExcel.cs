@@ -1,8 +1,8 @@
 using PsychologicalAssessments.Orchestrator.Base;
 using PsychologicalAssessments.Orchestrator.DataOutput;
-using PsychologicalAssessments.Services.Conners.Self.Indexes.AdhdConners3;
 using PsychologicalAssessments.Services.Conners.Self.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd3;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
@@ -20,7 +20,7 @@ public class ConnersSelfDataTemplateExcel : IDataTemplate
             .FirstOrDefault(r => r.Name == "AdhdIndex")!.Output!;
         var disorderIndex = (DisorderIndex)subject.Rules?
             .FirstOrDefault(r => r.Name == "DisorderIndex")!.Output!;
-        var adhdConners3Index = (AdhdConners3Index)subject.Rules?
+        var adhdConners3Index = (Adhd3Index)subject.Rules?
             .FirstOrDefault(r => r.Name == "AdhdConners3Index")!.Output!;
         var screeningIndex = (ScreeningIndex)subject.Rules?
             .FirstOrDefault(r => r.Name == "ScreeningIndex")!.Output!;

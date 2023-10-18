@@ -1,16 +1,18 @@
 using PsychologicalAssessments.Orchestrator.Rules;
 using PsychologicalAssessments.Services.Conners.ConnersSelfEvaluation.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.Conners.Self.Indexes.Adhd;
-using PsychologicalAssessments.Services.Conners.Self.Indexes.AdhdConners3;
+using PsychologicalAssessments.Services.Conners.Self.Indexes.Adhd3;
 using PsychologicalAssessments.Services.Conners.Self.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd3;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Deterioration;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.PiAndNi;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
 using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.SevereBehavior;
 
-namespace PsychologicalAssessments.Services.Conners.ConnersSelfEvaluation.Rules;
+namespace PsychologicalAssessments.Services.Conners.Self.Rules;
 
 public class ConnersSelfRuleFactory : IRuleFactory
 {
@@ -38,17 +40,17 @@ public class ConnersSelfRuleFactory : IRuleFactory
         yield return new()
         {
             Name = "DisorderIndex",
-            Calculator = new DisorderCalculator()
+            Calculator = new DisorderCalculator(new ConnersSelfDisorderRulesFactory())
         };
         yield return new()
         {
             Name = "DeteriorationIndex",
-            Calculator = new DisorderCalculator()
+            Calculator = new DeteriorationCalculator(new byte[] { 95, 96, 97 })
         };
         yield return new()
         {
             Name = "AdhdConners3Index",
-            Calculator = new AdhdConners3Calculator()
+            Calculator = new Adhd3Calculator(new ConnersSelfAdhd3RulesFactory())
         };
         yield return new()
         {
