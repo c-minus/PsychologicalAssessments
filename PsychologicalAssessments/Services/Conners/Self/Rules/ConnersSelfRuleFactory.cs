@@ -3,14 +3,16 @@ using PsychologicalAssessments.Services.Conners.ConnersSelfEvaluation.Indexes.In
 using PsychologicalAssessments.Services.Conners.Self.Indexes.Adhd;
 using PsychologicalAssessments.Services.Conners.Self.Indexes.Adhd3;
 using PsychologicalAssessments.Services.Conners.Self.Indexes.Disorder;
+using PsychologicalAssessments.Services.Conners.Self.Indexes.Screening;
+using PsychologicalAssessments.Services.Conners.Self.Indexes.SevereBehavior;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd3;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Deterioration;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.PiAndNi;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.SevereBehavior;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Screening;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.SevereBehavior;
 
 namespace PsychologicalAssessments.Services.Conners.Self.Rules;
 
@@ -55,12 +57,12 @@ public class ConnersSelfRuleFactory : IRuleFactory
         yield return new()
         {
             Name = "ScreeningIndex",
-            Calculator = new ScreeningCalculator()
+            Calculator = new ScreeningCalculator(new ConnersSelfScreeningMapper())
         };
         yield return new()
         {
             Name = "SevereBehaviorIndex",
-            Calculator = new SevereBehaviorCalculator()
+            Calculator = new SevereBehaviorCalculator(new ConnersSelfSevereBehaviorMapper())
         };
     }
 }

@@ -1,7 +1,7 @@
 using PsychologicalAssessments.Orchestrator.Base;
 using PsychologicalAssessments.Orchestrator.Profile;
 
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Profiles;
+namespace PsychologicalAssessments.Services.Conners.Self.Profiles;
 
 public class ConnersSelfProfileFactory : IProfileFactory
 {

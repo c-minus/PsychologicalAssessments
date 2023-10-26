@@ -1,11 +1,11 @@
-﻿namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
+﻿namespace PsychologicalAssessments.Services.Conners.Shared.Indexes.Screening;
 
 public class DepressionIndex
 {
-    public byte UselessnessScore { get; set; }
-    public byte LostOfInterestOrPleasureScore { get; set; }
-    public byte SadnessOrIrritableScore { get; set; }
-    public byte TiredOrLowEnergyScore { get; set; }
+    public byte UselessnessScore { get; init; }
+    public byte LostOfInterestOrPleasureScore { get; init; }
+    public byte SadnessOrIrritableScore { get; init; }
+    public byte TiredOrLowEnergyScore { get; init; }
 
     public bool Uselessness => UselessnessScore >= 1;
     public bool LostOfInterestOrPleasure => LostOfInterestOrPleasureScore >= 1;

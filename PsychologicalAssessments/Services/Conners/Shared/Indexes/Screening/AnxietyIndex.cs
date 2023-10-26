@@ -1,11 +1,11 @@
-﻿namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
+﻿namespace PsychologicalAssessments.Services.Conners.Shared.Indexes.Screening;
 
 public class AnxietyIndex
 {
-    public byte NervousOrAgitatedScore { get; set; }
-    public byte IrritableScore { get; set; }
-    public byte WorriedControlScore { get; set; }
-    public byte WorriedScore { get; set; }
+    public byte NervousOrAgitatedScore { get; init; }
+    public byte IrritableScore { get; init; }
+    public byte WorriedControlScore { get; init; }
+    public byte WorriedScore { get; init; }
 
     public bool NervousOrAgitated => NervousOrAgitatedScore >= 1;
     public bool Irritable => IrritableScore >= 1;

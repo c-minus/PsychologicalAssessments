@@ -4,11 +4,10 @@ using PsychologicalAssessments.Services.Conners.Self.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd3;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Inconsistency;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.SevereBehavior;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Screening;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.SevereBehavior;
 
-namespace PsychologicalAssessments.Services.ConnersSelfEvaluation.DataOutput;
+namespace PsychologicalAssessments.Services.Conners.Self.DataOutput;
 
 public class ConnersSelfDataTemplateExcel : IDataTemplate
 {

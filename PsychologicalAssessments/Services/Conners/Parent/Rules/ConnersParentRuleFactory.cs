@@ -3,16 +3,16 @@ using PsychologicalAssessments.Services.Conners.ConnersParent.Indexes.Inconsiste
 using PsychologicalAssessments.Services.Conners.Parent.Indexes.Adhd;
 using PsychologicalAssessments.Services.Conners.Parent.Indexes.Adhd3;
 using PsychologicalAssessments.Services.Conners.Parent.Indexes.Disorder;
-using PsychologicalAssessments.Services.Conners.Self.Indexes.Disorder;
+using PsychologicalAssessments.Services.Conners.Parent.Indexes.Screening;
+using PsychologicalAssessments.Services.Conners.Parent.Indexes.SevereBehavior;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Adhd3;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Deterioration;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Disorder;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.Inconsistency;
 using PsychologicalAssessments.Services.Conners.Shared.Indexes.PiAndNi;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Disorder;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.Screening;
-using PsychologicalAssessments.Services.ConnersSelfEvaluation.Indexes.SevereBehavior;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.Screening;
+using PsychologicalAssessments.Services.Conners.Shared.Indexes.SevereBehavior;
 
 namespace PsychologicalAssessments.Services.Conners.Parent.Rules;
 
@@ -57,12 +57,12 @@ public class ConnersParentRuleFactory : IRuleFactory
         yield return new()
         {
             Name = "ScreeningIndex",
-            Calculator = new ScreeningCalculator()
+            Calculator = new ScreeningCalculator(new ConnersParentScreeningMapper())
         };
         yield return new()
         {
             Name = "SevereBehaviorIndex",
-            Calculator = new SevereBehaviorCalculator()
+            Calculator = new SevereBehaviorCalculator(new ConnersParentSevereBehaviorMapper())
         };
     }
 }
